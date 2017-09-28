@@ -104,6 +104,8 @@ public class WeaponScript : MonoBehaviour
             else
             {
                 move.direction = this.transform.right;
+                EnergyScript energy = GetComponentInParent<EnergyScript>();
+                energy.Decrement(1);
             }
         }
     }

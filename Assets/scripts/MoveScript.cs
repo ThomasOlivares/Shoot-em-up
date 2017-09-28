@@ -24,15 +24,28 @@ public class MoveScript : MonoBehaviour
     {
         Line,
         ZigZag,
-        Spiral
     };
-    
+
+    public int range = 3;
+    private float position;
     public Vector2 direction = new Vector2(-1, 0);
     public bool isEnnemy;
     public mvtType myMvt;
 
     private Vector2 movement;
     private Rigidbody2D rigidbodyComponent;
+
+    private void Start()
+    {
+        switch (myMvt)
+        {
+            case mvtType.Line:
+                break;
+            case mvtType.ZigZag:
+                direction = new Vector2(-1, -1);
+                break;
+        }
+    }
 
     void Update()
     {
@@ -49,6 +62,20 @@ public class MoveScript : MonoBehaviour
         {
             rigidbodyComponent = GetComponent<Rigidbody2D>();
         }
+
+        if(myMvt == mvtType.ZigZag)
+        {
+            position += movement.y;
+            if (position >= range)
+            {
+                direction = new Vector2(-1, -1);
+            }
+            else if (position <= -range)
+            {
+                direction = new Vector2(-1,  1);
+            }
+        }
+        
 
 
         // Apply movement to the rigidbody

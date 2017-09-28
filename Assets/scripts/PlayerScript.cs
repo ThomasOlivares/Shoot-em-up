@@ -60,7 +60,7 @@ public class PlayerScript : MonoBehaviour
             WeaponScript[] weapons = GetComponentsInChildren<WeaponScript>();
             foreach (WeaponScript weapon in weapons)
             {
-                if (weapon != null)
+                if (weapon != null && canAttack())
                 {
                     if (myBullet == weapon.myType)
                     {
@@ -78,6 +78,21 @@ public class PlayerScript : MonoBehaviour
                 }
             }
         }
+        Vector3 pos = Camera.main.WorldToViewportPoint(transform.position);
+        pos.x = Mathf.Clamp01(pos.x);
+        pos.y = Mathf.Clamp01(pos.y);
+        transform.position = Camera.main.ViewportToWorldPoint(pos);
+    }
+    
+    bool canAttack()
+    {
+        EnergyScript energyBar = GetComponent<EnergyScript>();
+        // If the player has reach 0 energy, low reload and waiting until full energy
+        if (energyBar.speedReload != 1)
+        {
+            return false;
+        }
+        return energyBar.energy >= 1;
     }
 
     void FixedUpdate()
